@@ -126,6 +126,7 @@ app.layout = html.Div(
                 html.H1(
                     'Analytical Dashboard for Tesla Inc.',
                     className='eight columns',
+                    style={'background-color': 'rgb(93, 173, 226)','border-radius': '10px','color':'white','text-align':'center'}
                 ),
                 html.Img(
                      src="https://www.interiorsplash.com/hs-fs/hubfs/initech.png?width=1118&name=initech.png",
@@ -142,30 +143,32 @@ app.layout = html.Div(
         ),
         html.Div(
             [
+                html.H3("Live Stock Price (TSLA)",style={'text-align':'center'}),
                 html.Div(
                     [
-                        dcc.Graph(id='live-graph2', animate=True),
+                        dcc.Graph(id='live-graph2', animate=True, 
+                            ),
                         dcc.Interval(id='graph-update2',interval=1*3000),
                     ],
                     className='eight columns',
-                    style={'margin-top': '20'}
+                    style={'margin-top': '5','margin-left':'auto','margin-right':'auto','width':'100%'}
                 ),
-                html.Div(
-                    [
-                        dcc.Graph(id='individual_graph', 
-                            figure={
-                    'data': [
-                        {'x': h_x, 'y': h_y, 'type': 'line', 'name': 'historical stock'}
-                     ,
-                        ],
-                    'layout': {
-                        'title': 'Tesla Historical Stock Price (updated daily)'
-                        }
-                    })
-                    ],
-                    className='four columns',
-                    style={'margin-top': '20'}
-                ),
+                # html.Div(
+                #     [
+                #         dcc.Graph(id='individual_graph', 
+                #             figure={
+                #     'data': [
+                #         {'x': h_x, 'y': h_y, 'type': 'line', 'name': 'historical stock'}
+                #      ,
+                #         ],
+                #     'layout': {
+                #         'title': 'Tesla Historical Stock Price (updated daily)'
+                #         }
+                #     })
+                #     ],
+                #     className='four columns',
+                #     style={'margin-top': '20'}
+                # ),
             ],
             className='row'
         ),
@@ -180,10 +183,10 @@ app.layout = html.Div(
                             }
                      ,
                         ],
-                    'layout': {
-                        'title': 'Text Analysis Words Frequency'
+                    'layout': go.Layout(xaxis={'title':'Rank'}, yaxis={'title':'Word Frequency'}, title='Text Anlaysis: Word Frequency')
+                        # 'title': 'Text Analysis Words Frequency'
                         
-                        }
+                        
                     })
                     ],
                     className='four columns',
@@ -206,13 +209,15 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.Img(
-                         src="https://1drv.ms/u/s!AlYPmtP11H3cs08fKLvLSgFEHkBj",
+                         src="https://raw.githubusercontent.com/Minocy/Dashboard-project/master/prediction.png",
                         className='one columns',
                         style={
-                            'height': '100',
-                            'width': '225',
+                            'height': '300',
+                            'width': '400',
                             'float': 'right',
+                            'margin-top': '100',
                             'position': 'relative',
+                            'margin-left':'20'
                          },
                     ),
                         # dcc.Graph(id='aggregate_graph')
@@ -258,9 +263,9 @@ def update_graph_scatter(sentiment_term):
                 mode= 'lines+markers'
                 )
 
-        return {'data': [data],'layout' : go.Layout(xaxis=dict(range=[min(X),max(X)]),
-                                                    yaxis=dict(range=[min(Y),max(Y)]),
-                                                    title='Term: {}'.format(sentiment_term))}
+        return {'data': [data],'layout' : go.Layout(xaxis=dict(range=[min(X),max(X)], title='ID'),
+                                                    yaxis=dict(range=[min(Y),max(Y)], title='Sentiment Score'),
+                                                    title='Live Twitter Sentiment Score')}
 
     except Exception as e:
         with open('errors.txt','a') as f:
@@ -289,7 +294,9 @@ def update_graph_scatter():
             mode= 'lines+markers'
             )
 
-    return {'data': [data]}
+    return {'data': [data], 'layout':go.Layout(xaxis={'title':'Time'},
+                            yaxis={'title':'Stock Price'}
+                            )}
 
 
 

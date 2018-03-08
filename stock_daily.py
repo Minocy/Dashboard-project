@@ -17,6 +17,7 @@ import sqlite3
 
 conn = sqlite3.connect('test2.db')
 c = conn.cursor()
+c.execute('drop table if exists historical_price')
 c.execute('CREATE TABLE historical_price(Day DATETIME, Open INTEGER, High INTEGER, Low INTEGER, \
 	Close INTEGER, Volume INTEGER)')
 

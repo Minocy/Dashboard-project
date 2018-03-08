@@ -20,6 +20,7 @@ value=js.get("Time Series (1min)")
 df1=pd.DataFrame(value).transpose()
 df1=np.array(df1)
 
+print type(value)
 # get timestamp 
 time=value.keys() 
 df2=pd.DataFrame(time)
@@ -38,10 +39,12 @@ import sqlite3
 
 conn = sqlite3.connect('test1.db')
 c = conn.cursor()
-#c.execute('CREATE TABLE Stock_price(Day DATETIME, Time_value DATETIME, Open INTEGER, High INTEGER, Low INTEGER, \
-#	Close INTEGER, Volume INTEGER)')
+c.execute('drop table if exists Stock_price')
+c.execute('CREATE TABLE Stock_price(Day DATETIME, Time_value DATETIME, Open INTEGER, High INTEGER, Low INTEGER, \
+	Close INTEGER, Volume INTEGER)')
 
 for row in data:
+    #print tuple(row)
     c.execute('INSERT INTO Stock_price VALUES(?, ?, ?, ?, ?, ?,?)',tuple(row))
 
 #c.execute('SELECT * from Stock_price')
@@ -60,5 +63,5 @@ f=pd.read_sql_query("SELECT * FROM Stock_price \
 conn.commit()
 conn.close()
 
-print f
+#print f
 
